@@ -1,0 +1,188 @@
+@import "./common.css";
+/** 공지사항 */
+
+.notice {
+    width: 100%;
+}
+
+.art1-title {
+    font-weight: bold;
+    padding-bottom: 5px;
+}
+
+.news-container {
+    position: relative;
+    max-width: 1080px;
+    margin: 0px auto;
+}
+
+.news-container::after {
+    display: block;
+    content: "";
+    clear: both;
+}
+
+.blind {
+    position: absolute;
+    font-size: 0;
+    top: -999999px;
+}
+
+.blind h3 {
+    text-align: left;
+    margin-top: 10px;
+    font-weight: 600;;
+}
+
+colgroup {
+    display: table-column-group;
+}
+
+col {
+    display: table-column;
+}
+
+.table-type1 {
+    width: 100%;
+}
+
+table caption {
+    font-size: 0px;
+}
+
+.table-type1 thead th {
+    border-top: 2px solid #000000;
+    border-bottom: 2px solid #bebebe;
+    background-color: #f8f8f8;
+    padding: 10px;
+    font-size: 17px;
+    font-weight: 500;
+    vertical-align: middle;
+}
+
+tr {
+    height: 70px;
+}
+
+.table-type1 tbody tr {
+    text-align: center;
+    border-bottom: 1px solid #eaeaea;
+    border-top: 1px solid #eaeaea;
+}
+
+.table-type1 tbody tr {
+    text-align: center;
+    border-bottom: 1px solid #eaeaea;
+    border-top: 1px solid #eaeaea;
+}
+
+.table-type1 tbody tr>td, .table-type1 tbody tr>th {
+    padding: 10px;
+    vertical-align: middle;
+    word-break: break-all;
+}
+
+.table-type1 tbody tr>td.title, .table-type1.td-align-left tbody td {
+    text-align: left;
+}
+
+table.ellipsis td.title a {
+    display: block;
+}
+
+.table-type1 tbody tr>td.title a {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.bottom-tapbox {
+    margin-top: 30px;
+    margin-bottom: 15px;
+    position: relative;
+    width: 100%;
+}
+
+.bottom-tapbox-inner {
+    margin: 0px auto;
+    position: relative;
+    max-width: 1080px;
+}
+
+.btn-top {
+    position: absolute;
+    top: 2px;
+    right: 0px;
+}
+
+.tap-box {
+    position: relative;
+    width: auto;
+    height: auto;
+}
+
+.tab2 {
+    position: relative;
+    display: inline-block;
+    border-radius: 15px;
+    padding: 3px;
+    box-shadow: 0 0 5px rgb(0 0 0 / 25%);
+    z-index: 1;
+    vertical-align: top;
+    margin: 0px;
+}
+
+.on > button {
+    cursor: pointer;
+    color: #ffffff;
+    background-color: transparent;
+    transition: all .3s;
+}
+
+.next > button {
+    cursor: pointer;
+    color: #343a40;
+    background-color: transparent;
+}
+
+.tap-box > ul > li {
+    text-align: center;
+    border-radius: 10px;
+    width: 50px;
+    display: inline-block;
+}
+
+.tab-content {
+    display: none;
+    margin-top: 20px;
+}
+
+.on {
+    display: block;
+}
+
+.on-back {
+    position: absolute;
+    background-color: #aaa7a7;
+    top: 3px;
+    left: 5px;
+    height: 25px;
+    z-index: -1;
+    vertical-align: top;
+    transition: .5s;
+    transform: translate(0px);
+}
+
+table a:hover {
+    text-decoration: underline;
+    color: #4b7bff;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+table td {
+    font-size: 16px;
+}

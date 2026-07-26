@@ -1,0 +1,234 @@
+@import "./reset.css";
+a, abbr, acronym, address, applet, article, aside, audio,
+b, big, blockquote, body, button,
+canvas, caption, center, cite, code,
+dd, del, details, dfn, div, dl, dt,
+em, embed,
+fieldset, figcaption, figure, footer, form,
+h1, h2, h3, h4, h5, h6, header, hgroup, html,
+i, iframe, img, input, ins,
+kbd,
+label, legend, li,
+mark, menu,
+nav,
+object, ol, output,
+p, pre,
+q,
+ruby,
+s, samp, section, select, small, span, strike, strong, sub, summary, sup,
+table, tbody, td, textarea, tfoot, th, thead, time, tr, tt,
+u, ul,
+var, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 16px;
+    letter-spacing: -1px;
+    vertical-align: baseline;
+    color: #343a40;
+    text-decoration: none;
+    }
+
+body section{
+    width: 100%;
+    height: 100%;
+    line-height: 1.5;
+    display: block;
+    text-align: center;
+}
+
+/** header */
+
+.header-top {
+    display: block;
+    position: relative;
+    width: 100%;
+    height: auto;
+    z-index: auto;
+    border-bottom: 1px solid #dedede;
+}
+
+.top-inner {
+    position: relative;
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    width: 100%;
+    height: 72px;
+    max-width: 1080px;
+    margin: 0px auto;
+}
+
+.logo-btn {
+    margin: 0px;
+    padding: 0px;
+    appearance: none;
+    border: none;
+    outline: none;
+    background: none;
+    cursor: pointer;
+    touch-action: manipulation;
+}
+
+.logo {
+    display: block;
+    width: 225px;
+}
+
+.header-bottom {
+    display: block;
+    position: relative;
+    width: 100%;
+    height: 50px;
+    z-index: auto;
+    font-weight: bold;
+}
+
+.bot-inner {
+    position: relative;
+    display: flex;
+    margin: 0px auto;
+    width: 100%;
+    height: 50px;
+    max-width: 1100px;
+}
+
+/** gnb */
+
+.header-bottom .gnb1 {
+    font-size: 0px;
+    width: auto;
+    z-index: 1000;
+}
+
+li, ol, ul {
+    border-radius: 10px;
+    list-style: none;
+}
+
+.header-bottom .gnb1 > li:hover > a{
+    color: #4b7bff;
+}
+
+.header-bottom .gnb1 > li {
+    display: inline-block;
+    left: 0px;
+    width: auto;
+    vertical-align: top;
+    text-align: center;
+}
+
+.gnb-selector {
+    margin-left: 10px;
+}
+
+.header-bottom .gnb1 > li > a {
+    text-align: left;
+    display: flex;
+    height: 30px;
+    width: auto;
+    text-decoration: none;
+    font-size: 18px;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.header-bottom .gnb2 {
+    display: none;
+    box-shadow: 0 0 8px rgb(19 65 255 / 70%);
+    background: #ffffff;
+    z-index: 1000;
+}
+
+.header-bottom .gnb1 > li:hover > .gnb2 {
+    display: block;
+}
+
+.header-bottom .gnb2 a {
+    display: block;
+    text-decoration: none;
+    width: auto;
+    padding: 10px 0px;
+}
+
+.header-bottom .gnb2 a:hover {
+    color: #4b7bff;
+}
+
+
+/** body, article */
+.art-title-container {
+    display: block;
+    position: relative;
+    height: auto;
+    width: auto;
+    max-width: 1080px;
+    margin: 0px auto;
+}
+
+.art1-title {
+    display: block;
+    position: relative;
+    text-align: left;
+    padding: 20px 0px;
+    font-size: 36px;
+    font-weight: bold;
+}
+
+
+
+
+
+#footer {
+    position: relative;
+    width: auto;
+    padding-bottom: calc(env(safe-area-inset-bottom));
+    background-color: rgb(255, 255, 255);
+    border-top: 1px solid rgb(233, 236, 239);
+}
+
+.footerinner {
+    display: block;
+    position: relative;
+    height: 290px;
+    max-width: 1080px;
+    margin: 0px auto;
+}
+
+.footerTopBox {
+    display: flex;
+    position: relative;
+    height: auto;
+    text-align: left;
+    margin: 0px auto;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.foot-menu {
+    position: relative;
+}
+
+.foot-menu > li {
+    position: relative;
+    display: inline-block;
+    padding: 0 10px;
+}
+
+.foot-menu > li::before {
+    display: block;
+    content: "";
+    position: absolute;
+    right: -4px;
+    top: 50%;
+    margin-top: -5px;
+    width: 1px;
+    height: 10px;
+    background: #a7a7a7;
+}
+    
+.ft-red {
+    color: red;
+}
