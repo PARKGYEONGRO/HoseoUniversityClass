@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📊 빅데이터·AI 전공 헬퍼 챗앱 📊</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* 커스텀 슬림 스크롤바 디자인 */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background-color: #475569;
+            border-radius: 9999px;
+        }
+        body {
+            background-color: #0b0f19;
+        }
+    </style>
+</head>
+<body class="h-screen w-screen text-slate-100 font-sans flex items-center justify-center overflow-hidden bg-[#090d16]">
+
+    <div class="flex h-full w-full md:h-screen md:w-screen md:aspect-[16/9] bg-[#0f172a] md:rounded-2xl md:border md:border-slate-800 md:shadow-2xl overflow-hidden relative flex-col md:flex-row">
+        
+        <div class="hidden md:flex w-72 lg:w-80 bg-[#1e293b] border-r border-slate-800 flex-col shrink-0 h-full">
+            <div class="p-4 bg-gradient-to-r from-sky-600 to-blue-600 flex items-center gap-3 shrink-0">
+                <i data-lucide="database" class="w-6 h-6 text-white animate-pulse"></i>
+                <div>
+                    <h1 class="text-sm md:text-base font-bold text-white tracking-wide">AI·빅데이터 헬퍼</h1>
+                    <p class="text-[11px] text-sky-200">전공 개념 마스터 웹앱</p>
+                </div>
+            </div>
+
+            <div class="flex-1 p-4 overflow-hidden flex flex-col min-h-0">
+                <div class="flex items-center gap-2 mb-2 shrink-0">
+                    <i data-lucide="help-circle" class="w-4 h-4 text-sky-400"></i>
+                    <span class="text-xs font-semibold text-sky-400 tracking-wider uppercase">자주 묻는 전공 질문</span>
+                </div>
+                <div id="desktopPresetButtons" class="flex-1 overflow-y-auto custom-scrollbar flex flex-col gap-2 pr-1">
+                    </div>
+            </div>
+            
+            <div class="p-4 border-t border-slate-800 bg-[#111827] shrink-0 flex gap-2">
+                <label for="csvFileInput" class="flex-1 flex items-center justify-center gap-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 py-2.5 px-2 rounded-xl cursor-pointer text-xs font-medium transition-all shadow-sm">
+                    <i data-lucide="upload-cloud" class="w-4 h-4 text-sky-400"></i>
+                    <span>CSV 로드</span>
+                </label>
+                <input type="file" id="csvFileInput" accept=".csv" onchange="loadCSV(event)" class="hidden">
+                
+                <button onclick="resetToDefaultQA()" class="flex items-center justify-center gap-1 bg-rose-950/40 hover:bg-rose-900/60 text-rose-300 border border-rose-800/60 py-2.5 px-3 rounded-xl text-xs font-medium transition-all shadow-sm" title="기본 전공 질문으로 초기화">
+                    <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i>
+                    <span>초기화</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="flex-1 flex flex-col h-full bg-[#0f172a] relative min-w-0">
+            
+            <div class="flex md:hidden items-center justify-between p-4 bg-[#1e293b] border-b border-slate-800 shrink-0 shadow-md">
+                <div class="flex items-center gap-2">
+                    <i data-lucide="database" class="w-5 h-5 text-sky-400"></i>
+                    <span class="text-sm font-bold text-slate-200 tracking-wide">AI·빅데이터 헬퍼</span>
+                </div>
+                <div class="flex items-center gap-1.5">
+                    <label for="csvFileInputMobile" class="flex items-center gap-1 bg-slate-800 hover:bg-slate-700 text-xs py-1.5 px-2 rounded-lg cursor-pointer border border-slate-700 transition-all text-slate-300">
+                        <i data-lucide="upload-cloud" class="w-3.5 h-3.5 text-sky-400"></i>
+                        <span>CSV 로드</span>
+                    </label>
+                    <input type="file" id="csvFileInputMobile" accept=".csv" onchange="loadCSV(event)" class="hidden">
+                    
+                    <button onclick="resetToDefaultQA()" class="flex items-center gap-1 bg-rose-950/40 hover:bg-rose-900/60 text-rose-300 border border-rose-800/50 py-1.5 px-2 rounded-lg text-xs transition-all">
+                        <i data-lucide="refresh-cw" class="w-3 h-3"></i>
+                        <span>초기화</span>
+                    </button>
+                </div>
+            </div>
+
+            <div id="chatMessages" class="flex-1 p-4 md:p-6 overflow-y-auto custom-scrollbar space-y-4" onclick="closeMobilePopup()">
+                <div class="flex gap-3 max-w-[85%]">
+                    <div class="w-8 h-8 rounded-full bg-gradient-to-br from-sky-500 to-blue-600 flex items-center justify-center text-white shrink-0 shadow-md">
+                        <i data-lucide="bot" class="w-4 h-4"></i>
+                    </div>
+                    <div class="bg-[#1e293b] border border-slate-800 text-slate-200 p-3.5 md:p-4 rounded-2xl rounded-tl-none shadow-sm leading-relaxed text-sm md:text-base space-y-2">
+                        <p class="font-semibold text-sky-400">안녕하세요! 빅데이터 및 AI 전공 헬퍼입니다. 🤖</p>
+                        <p class="text-slate-300">PC 화면에서는 가로 세로가 균형 잡힌 **16:9 고해상도 앱 규격**으로 시각 자료가 왜곡 없이 깔끔하게 표시됩니다.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-3 md:p-4 border-t border-slate-800 bg-[#1e293b]/50 backdrop-blur-md shrink-0 z-10" onclick="closeMobilePopup()">
+                <div class="max-w-4xl mx-auto flex gap-2">
+                    <input type="text" id="chatInput" 
+                           class="flex-1 bg-[#0f172a] text-white placeholder-slate-500 border border-slate-800 focus:border-sky-500 focus:ring-1 focus:ring-sky-500 rounded-xl px-4 py-3 outline-none text-sm md:text-base transition-all shadow-inner" 
+                           placeholder="궁금한 전공 용어나 개념을 질문하세요..." 
+                           onkeypress="handleKeyPress(event)">
+                    <button onclick="sendMessage()" 
+                            class="bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-600 hover:to-blue-700 text-white font-medium px-4 md:px-5 rounded-xl flex items-center justify-center gap-1.5 transition-all active:scale-95 shadow-md shrink-0">
+                        <span class="hidden sm:inline text-sm">전송</span>
+                        <i data-lucide="send" class="w-4 h-4"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div id="mobilePopup" class="md:hidden fixed bottom-0 left-0 right-0 bg-[#1e293b] border-t border-slate-800 rounded-t-3xl shadow-2xl transform translate-y-full transition-transform duration-300 ease-out z-40 max-h-[50vh] flex flex-col">
+                <div class="p-4 border-b border-slate-800 flex justify-between items-center bg-[#151f32] rounded-t-3xl shrink-0">
+                    <div class="flex items-center gap-1.5">
+                        <i data-lucide="help-circle" class="w-4 h-4 text-sky-400"></i>
+                        <span class="text-xs font-bold text-sky-400 tracking-wider uppercase">추천 질문 선택 목록</span>
+                    </div>
+                    <button onclick="toggleMobilePopup(event)" class="text-slate-400 hover:text-white p-1 rounded-lg">
+                        <i data-lucide="x" class="w-5 h-5"></i>
+                    </button>
+                </div>
+                <div id="mobilePresetButtons" class="p-4 overflow-y-auto custom-scrollbar flex flex-col gap-2 flex-1 pb-8">
+                    </div>
+            </div>
+
+            <button id="mobileFab" onclick="toggleMobilePopup(event)" 
+                    class="md:hidden fixed bottom-20 right-5 w-14 h-14 bg-gradient-to-br from-sky-500 to-blue-600 hover:from-sky-600 hover:to-blue-700 text-white rounded-full flex items-center justify-center shadow-2xl border border-sky-400/30 z-30 transition-transform active:scale-90 animate-bounce">
+                <i data-lucide="lightbulb" class="w-6 h-6"></i>
+            </button>
+
+        </div>
+    </div>
+
+<script>
+    const chatMessages = document.getElementById('chatMessages');
+    const chatInput = document.getElementById('chatInput');
+    const desktopPresetButtons = document.getElementById('desktopPresetButtons');
+    const mobilePresetButtons = document.getElementById('mobilePresetButtons');
+    const mobilePopup = document.getElementById('mobilePopup');
+
+    // 원본 데이터 백업
+    const DEFAULT_QA_DATABASE = {
+        "인공지능(AI)과 머신러닝(ML), 딥러닝(DL)의 차이점은 무엇인가요?": {
+            answer: "AI는 인간의 지능을 모방하는 광범위한 기술이며, 머신러닝은 데이터로부터 학습하는 AI의 하위 집합입니다. 딥러닝은 인간의 뇌 신경망을 모방한 인공신경망(ANN)을 사용하는 머신러닝의 특수한 분야입니다. 구조적으로는 AI > ML > DL 포함 관계를 가집니다.",
+            image: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=600&auto=format&fit=crop"
+        },
+        "지도학습(Supervised)과 비지도학습(Unsupervised)의 핵심 차이는?": {
+            answer: "가장 큰 차이는 데이터에 '정답(Label)'이 있느냐 없느냐입니다. 지도학습은 정답이 있는 데이터를 주고 예측/분류를 학습시키는 반면(예: 스팸 메일 분류), 비지도학습은 정답 없이 데이터 자체의 패턴이나 구조를 파악하여 그룹화합니다(예: 고객 군집 분석).",
+            image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&auto=format&fit=crop"
+        },
+        "과적합(Overfitting)이란 무엇이며 어떻게 해결하나요?": {
+            answer: "모델이 훈련 데이터에 너무 과하게 맞춰져서 새로운 데이터(테스트 데이터)에서는 예측 성능이 크게 떨어지는 현상입니다. 해결 방법으로는 데이터 양 늘리기, 모델 복잡도 줄이기, 규제(Regularization; L1/L2) 적용, 드롭아웃(Dropout) 사용 등이 있습니다.",
+            image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&auto=format&fit=crop"
+        },
+        "빅데이터의 5V 특성이 무엇인가요?": {
+            answer: "빅데이터의 주요 특징을 나타내는 5가지 요소입니다. 규모(Volume), 속도(Velocity), 다양성(Variety)의 핵심 3V에 더해 데이터의 신뢰성을 뜻하는 정확성(Veracity), 그리고 경제적 유용성을 뜻하는 가치(Value)가 포함됩니다.",
+            image: "https://images.unsplash.com/photo-1544383835-bda2bc66a55d?w=600&auto=format&fit=crop"
+        },
+        "하두프(Hadoop)와 스파크(Spark)의 가장 큰 차이점은?": {
+            answer: "하두프는 디스크 기반(MapReduce)으로 데이터를 처리하여 대용량 저장과 안정성에 강점이 있지만 속도가 상대적으로 느립니다. 반면, 스파크는 메모리 내부(In-Memory)에서 데이터를 처리하므로 하두프보다 연산 속도가 수십~백 배 빠르며 실시간 데이터 스트리밍 처리에 유리합니다.",
+            image: "https://images.unsplash.com/photo-1515879218367-8466d910aaa4?w=600&auto=format&fit=crop"
+        },
+        "분류 성능 지표 중 정밀도(Precision)와 재현율(Recall)의 차이는?": {
+            answer: "정밀도는 모델이 '참'이라고 예측한 것 중 실제 '참'인 비율입니다(스팸 메일 차단 등 중요). 재현율은 '실제 참'인 것 중 모델이 참이라고 '적중'한 비율입니다(암 진단, 범죄 예측 등 놓치면 안 되는 상황에 중요). 둘은 트레이드오프 관계에 있습니다.",
+            image: "https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=600&auto=format&fit=crop"
+        },
+        "정형 데이터, 반정형 데이터, 비정형 데이터의 차이는?": {
+            answer: "정형 데이터는 RDBMS 테이블처럼 고정된 구조에 정제된 데이터(CSV, SQL)입니다. 반정형 데이터는 고정된 스키마는 없으나 형태가 있는 데이터(JSON, XML)입니다. 비정형 데이터는 구조가 전혀 없는 텍스트, 이미지, 오디오, 영상 데이터입니다.",
+            image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=600&auto=format&fit=crop"
+        },
+        "데이터 사이언스에서 차원의 저주(Curse of Dimensionality)란?": {
+            answer: "데이터의 피처(변수) 수가 늘어남에 따라 공간의 차원이 커지면서, 데이터가 채우는 밀도가 급격히 낮아져 모델 학습 성능이 저하되는 현상입니다. 이를 해결하기 위해 PCA(주성분 분석) 같은 차원 축소 알고리즘을 사용합니다.",
+            image: "https://images.unsplash.com/photo-1509228468518-180dd4864904?w=600&auto=format&fit=crop"
+        },
+        "데이터 불균형(Data Imbalance) 문제는 어떻게 해결하나요?": {
+            answer: "특정 클래스의 데이터 수가 너무 적어 모델이 다수 클래스 위주로 학습하는 문제입니다. 다수 클래스를 줄이는 언더샘플링, 소수 클래스를 가상으로 합성 및 증식시키는 오버샘플링(SMOTE), 혹은 평가지표를 Accuracy 대신 F1-score/AUC로 설정해 해결합니다.",
+            image: "https://images.unsplash.com/photo-1532187863486-abf9d39d6618?w=600&auto=format&fit=crop"
+        },
+        "자연어 처리(NLP)에서 임베딩(Embedding)이란 무엇인가요?": {
+            answer: "컴퓨터가 텍스트를 이해할 수 있도록 단어나 문장을 고차원의 수치 벡터(Vector) 공간에 매핑하는 기술입니다. 단어의 의미적 유사성을 컴퓨터가 수학적으로 연산(예: '왕' - '남자' + '여자' = '여왕')할 수 있게 해줍니다.",
+            image: "https://images.unsplash.com/photo-1614064641938-3bbee52942c7?w=600&auto=format&fit=crop"
+        }
+    };
+
+    let qaDatabase = JSON.parse(JSON.stringify(DEFAULT_QA_DATABASE));
+
+    function renderPresetButtons() {
+        desktopPresetButtons.innerHTML = '';
+        mobilePresetButtons.innerHTML = '';
+
+        for (let question in qaDatabase) {
+            const btnDesktop = document.createElement('button');
+            btnDesktop.className = "w-full text-left bg-[#0f172a] hover:bg-[#1e293b] hover:text-sky-400 text-slate-400 border border-slate-800/80 hover:border-sky-500/50 p-2.5 rounded-xl text-xs transition-all duration-200 shrink-0 shadow-sm line-clamp-2";
+            btnDesktop.innerText = question;
+            btnDesktop.onclick = function() { clickQuestion(this); };
+            desktopPresetButtons.appendChild(btnDesktop);
+
+            const btnMobile = document.createElement('button');
+            btnMobile.className = "w-full text-left bg-[#0f172a] active:bg-[#1e293b] text-slate-300 border border-slate-800 p-3.5 rounded-xl text-sm transition-colors duration-150 shrink-0";
+            btnMobile.innerText = question;
+            btnMobile.onclick = function() { clickQuestion(this); closeMobilePopup(); };
+            mobilePresetButtons.appendChild(btnMobile);
+        }
+    }
+
+    function resetToDefaultQA() {
+        qaDatabase = JSON.parse(JSON.stringify(DEFAULT_QA_DATABASE));
+        renderPresetButtons();
+        document.getElementById('csvFileInput').value = "";
+        document.getElementById('csvFileInputMobile').value = "";
+        appendMessage("🔄 전공 지식베이스가 초기 내장 프리셋 리스트로 안전하게 원상 복구되었습니다.", "bot");
+    }
+
+    function toggleMobilePopup(event) {
+        event.stopPropagation();
+        if (mobilePopup.classList.contains('translate-y-full')) {
+            mobilePopup.classList.remove('translate-y-full');
+        } else {
+            mobilePopup.classList.add('translate-y-full');
+        }
+    }
+
+    function closeMobilePopup() {
+        if (!mobilePopup.classList.contains('translate-y-full')) {
+            mobilePopup.classList.add('translate-y-full');
+        }
+    }
+
+    function loadCSV(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const text = e.target.result;
+            parseCSV(text);
+        };
+        reader.readAsText(file, "utf-8"); 
+    }
+
+    function parseCSV(text) {
+        const lines = text.split(/\r?\n/);
+        const newDatabase = {};
+
+        for (let i = 1; i < lines.length; i++) {
+            if (!lines[i].trim()) continue;
+            
+            let matches = lines[i].match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g) || lines[i].split(',');
+            if (matches.length >= 2) {
+                let question = matches[0].replace(/^"(.*)"$/, '$1').trim();
+                let answer = matches[1].replace(/^"(.*)"$/, '$1').trim();
+                let image = matches[2] ? matches[2].replace(/^"(.*)"$/, '$1').trim() : "";
+                
+                newDatabase[question] = { answer: answer, image: image };
+            }
+        }
+
+        if (Object.keys(newDatabase).length > 0) {
+            qaDatabase = newDatabase;
+            renderPresetButtons();
+            appendMessage("📌 전공 지식베이스 CSV 연동 성공! 리스트 데이터가 새롭게 갱신되었습니다.", "bot");
+        }
+    }
+
+    function handleKeyPress(event) {
+        if (event.key === 'Enter') {
+            sendMessage();
+        }
+    }
+
+    function clickQuestion(button) {
+        chatInput.value = button.innerText;
+        sendMessage();
+    }
+
+    function sendMessage() {
+        const messageText = chatInput.value.trim();
+        if (messageText === '') return;
+
+        appendMessage(messageText, 'user');
+        chatInput.value = '';
+
+        setTimeout(() => {
+            const botResponse = getBotResponse(messageText);
+            appendMessage(botResponse.answer, 'bot', botResponse.image);
+        }, 400);
+    }
+
+    function appendMessage(text, sender, imageUrl = "") {
+        const wrapper = document.createElement('div');
+        wrapper.className = sender === 'user' ? "flex justify-end w-full" : "flex gap-3 max-w-[85%]";
+
+        if (sender === 'user') {
+            wrapper.innerHTML = `
+                <div class="bg-gradient-to-br from-sky-500 to-blue-600 text-white font-medium p-3 rounded-xl rounded-tr-none shadow-md max-w-[85%] leading-relaxed text-xs md:text-sm word-break break-all">
+                    ${text}
+                </div>
+            `;
+        } else {
+            let imgHtml = imageUrl ? `<img src="${imageUrl}" class="mt-2 max-w-full rounded-xl border border-slate-700 shadow-sm max-h-[180px] object-cover" alt="시각자료" onerror="this.style.display='none'">` : '';
+            wrapper.innerHTML = `
+                <div class="w-7 h-7 rounded-full bg-gradient-to-br from-sky-500 to-blue-600 flex items-center justify-center text-white shrink-0 shadow-md">
+                    <i data-lucide="bot" class="w-3.5 h-3.5"></i>
+                </div>
+                <div class="bg-[#1e293b] border border-slate-800 text-slate-200 p-3 rounded-xl rounded-tl-none shadow-sm leading-relaxed text-xs md:text-sm max-w-full">
+                    <div>${text.replace(/\n/g, '<br>')}</div>
+                    ${imgHtml}
+                </div>
+            `;
+        }
+
+        chatMessages.appendChild(wrapper);
+        lucide.createIcons();
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    function getBotResponse(userMessage) {
+        const cleanUserMsg = userMessage.toLowerCase().replace(/\s+/g, '');
+
+        if (qaDatabase[userMessage]) return qaDatabase[userMessage];
+
+        const 의도별_키워드_맵 = [
+            { keywords: ['ai', '머신러닝', '딥러닝', '차이', '관계', 'ml', 'dl', '인공지능'], targetQuestion: "인공지능(AI)과 머신러닝(ML), 딥러닝(DL)의 차이점은 무엇인가요?" },
+            { keywords: ['지도', '비지도', '레이블', '정답', '라벨', 'supervised', 'unsupervised'], targetQuestion: "지도학습(Supervised)과 비지도학습(Unsupervised)의 핵심 차이는?" },
+            { keywords: ['과적합', '오버피팅', 'overfitting', '테스트데이터', '드롭아웃', '규제'], targetQuestion: "과적합(Overfitting)이란 무엇이며 어떻게 해결하나요?" },
+            { keywords: ['5v', '빅데이터특징', 'v3', 'volume', 'velocity', 'variety'], targetQuestion: "빅데이터의 5V 특성이 무엇인가요?" },
+            { keywords: ['하두프', '스파크', 'hadoop', 'spark', '맵리듀스', '인메모리'], targetQuestion: "하두프(Hadoop)와 스파크(Spark)의 가장 큰 차이점은?" },
+            { keywords: ['정밀도', '재현율', 'precision', 'recall', '트레이드오프', 'f1'], targetQuestion: "분류 성능 지표 중 정밀도(Precision)와 재현율(Recall)의 차이는?" },
+            { keywords: ['정형', '반정형', '비정형', 'json', 'xml', 'csv'], targetQuestion: "정형 데이터, 반정형 데이터, 비정형 데이터의 차이는?" },
+            { keywords: ['차원의저주', '차원축소', 'pca', '피처', '변수', 'dimensionality'], targetQuestion: "데이터 사이언스에서 차원의 저주(Curse of Dimensionality)란?" },
+            { keywords: ['불균형', 'imbalance', 'smote', '오버샘플링', '언더샘플링'], targetQuestion: "데이터 불균형(Data Imbalance) 문제는 어떻게 해결하나요?" },
+            { keywords: ['임베딩', 'embedding', '벡터', 'vector', '자연어', 'nlp'], targetQuestion: "자연어 처리(NLP)에서 임베딩(Embedding)이란 무엇인가요?" }
+        ];
+
+        let bestMatchQuestion = null;
+        let maxScore = 0;
+
+        for (let item of 의도별_키워드_맵) {
+            let score = 0;
+            for (let keyword of item.keywords) {
+                if (userMessage.toLowerCase().includes(keyword)) score++;
+            }
+            if (score > maxScore) {
+                maxScore = score;
+                bestMatchQuestion = item.targetQuestion;
+            }
+        }
+
+        if (bestMatchQuestion && qaDatabase[bestMatchQuestion]) return qaDatabase[bestMatchQuestion];
+
+        for (let question in qaDatabase) {
+            const cleanQuestion = question.toLowerCase().replace(/\s+/g, '');
+            if (cleanUserMsg.includes(cleanQuestion) || cleanQuestion.includes(cleanUserMsg)) {
+                return qaDatabase[question];
+            }
+        }
+
+        return {
+            answer: "입력하신 단어와 매칭되는 지식을 찾지 못했습니다. 리스트를 열어 추천 질문을 터치하시거나 단어 위주(예: '과적합', '스파크')로 다시 입력해 보세요! 💡",
+            image: ""
+        };
+    }
+
+    renderPresetButtons();
+    lucide.createIcons();
+</script>
+</body>
+</html>
